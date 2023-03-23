@@ -12,7 +12,7 @@ const dateCron = '0 0 0 ? * 6L'
 const startM = '20230201'
 const endM = '20240101'
 
-function testUUID() {
+function updateHWICS() {
 
   const interval = CronParser.parseExpression(dateCron, {
     currentDate: startM,
@@ -28,7 +28,6 @@ function testUUID() {
     try {
       const obj = interval.next();
       const date = moment(obj.value.toDate()).format('YYYYMMDD');
-      // console.log(date);
       let tmpV = vevent.replace(/<--date-->/g, date);
       tmpV = tmpV.replace(/<--uuid-->/g, uuidv4());
       vevents = `${vevents}\n${tmpV}`
@@ -37,11 +36,9 @@ function testUUID() {
     }
   }
   vevents = vevents.trim();
-
   ics = ics.replace(/<--ReplaceMe-->/g, vevents);
-
-  fs.writeFileSync(path.join(__dirname, '/output/hw_workend.ics'), Buffer.from(ics));
   
+  fs.writeFileSync(path.join(__dirname, '/output/hw_workend.ics'), Buffer.from(ics));
 }
 
-testUUID();
+updateHWICS();
